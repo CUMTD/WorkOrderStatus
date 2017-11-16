@@ -1,5 +1,29 @@
 # Work Order Status
 
+## Connecting to the Database
+
+Add a `connectionStrings.config` file to the `WorkOrderStatus` directory.
+The contents of the file should look something like this:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<connectionStrings>
+	<add
+		name="DefaultConnectionString"
+		 connectionString="Data Source=SERVER_NAME;Initial Catalog=DB_NAME;Integrated Security=False;Persist Security Info=True;User ID=USER_NAME;Password=PW;MultipleActiveResultSets=True" providerName="System.Data.SqlClient" />
+</connectionStrings>
+```
+
+There are several values that will be specific to your server:
+
+| Name        | Value                                                                           |
+|-------------|---------------------------------------------------------------------------------|
+| SERVER_NAME | The FQDN of the SQL server.                                                     |
+| DB_NAME     | The name of the database where work orders are stored. For us it is: `FNWO_SQL` |
+| USER_NAME   | A SQL user with read only access to the database.                               |
+| PW          | The password for the SQL user.                                                  |
+
+
 ## Original SQL From Fleetnet
 The original SQL from Fleetnet (cleaned up) is as follows:
 
