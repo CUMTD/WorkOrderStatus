@@ -1,0 +1,14 @@
+.work-order {
+	overflow: hidden;
+	background: red;
+	display: flex;
+	flex-flow: column nowrap;
+
+	.heading, .main {
+		flex: 0 0 auto;
+	}
+
+	.status {
+		flex: 1 1 auto;
+	}
+}

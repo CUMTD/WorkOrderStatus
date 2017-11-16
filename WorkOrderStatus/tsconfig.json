@@ -1,0 +1,35 @@
+{
+	"compileOnSave": false,
+	"compilerOptions": {
+		"importHelpers": true,
+		"jsx": "react",
+		"lib": [
+			"dom",
+			"es5",
+			"es6",
+			"dom.iterable",
+			"es2015.promise",
+			"scripthost"
+		],
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"pretty": true,
+		"sourceMap": true,
+		"target": "es6",
+		"types": [
+			"react",
+			"react-dom",
+			"react-motion"
+		],
+		"typeRoots": [
+			"./node_modules/@types"
+		],
+		"allowJs": false
+	},
+	"exclude": [
+		"node_modules"
+	]
+}

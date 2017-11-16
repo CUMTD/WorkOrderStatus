@@ -1,0 +1,23 @@
+@import '_partials.scss';
+
+html {
+	box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+html, body, main {
+	color: $black;
+	margin: 0;
+	padding: 0;
+}
+
+body, main {
+	background: $white;
+	width: 1920px;
+	height: 1080px;
+}

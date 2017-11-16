@@ -1,0 +1,2 @@
+html{box-sizing:border-box}*,:after,:before{box-sizing:inherit}body,html,main{color:#222;margin:0;padding:0}body,main{background:#fff;width:1920px;height:1080px}.work-orders{outline:2px solid #ff0;display:-ms-grid;display:grid;-ms-grid-rows:auto;grid-template-rows:auto;-ms-grid-columns:(1fr)[6];grid-template-columns:repeat(6,1fr);grid-gap:20px}.work-order{overflow:hidden;background:red;display:flex;flex-flow:column nowrap}.work-order .heading,.work-order .main{flex:0 0 auto}.work-order .status{flex:1 1 auto}
+/*# sourceMappingURL=site.css.map */
