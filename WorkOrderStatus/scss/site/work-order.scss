@@ -6,6 +6,10 @@ table {
 	border-collapse: collapse;
 	font-size: $cell-padding * 5;
 
+	&.no-status {
+		max-width: 1340px;
+	}
+
 	th {
 		text-align: left;
 		padding: ($cell-padding * 2) $cell-padding ($cell-padding / 2) $cell-padding;
@@ -60,10 +64,10 @@ table {
 	}
 
 	.split {
-		border-left: 1px solid rgba($black, 0.1);
+		// border-left: 1px solid rgba($black, 0.1);
 	}
 
 	.status {
-		background: rgba($black, 0.1);
+		// status styles
 	}
 }

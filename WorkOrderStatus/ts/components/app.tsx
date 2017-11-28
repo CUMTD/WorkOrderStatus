@@ -51,7 +51,7 @@ export class App extends PureComponent<Props, State> {
 		return this
 			.state
 			.pages[this.state.currentIndex]
-			.map((wo: IWorkOrderGroup) => <WorkOrderGroup {...wo} />);
+			.map((wo: IWorkOrderGroup) => <WorkOrderGroup {...wo} key={`${wo.status}`} />);
 	}
 
 	public componentDidMount(): void {

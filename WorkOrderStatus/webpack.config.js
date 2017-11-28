@@ -1,12 +1,11 @@
-﻿const webpack = require('webpack');
+const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
 	devtool: '#source-map',
 	externals: {
 		react: 'React',
-		'react-dom': 'ReactDOM',
-		'react-motion': 'ReactMotion'
+		'react-dom': 'ReactDOM'
 	},
 	entry: {
 		index: path.join(__dirname, '/ts/index.tsx')

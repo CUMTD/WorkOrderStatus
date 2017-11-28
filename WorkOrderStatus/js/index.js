@@ -384,7 +384,7 @@ class App extends react_1.PureComponent {
         return this
             .state
             .pages[this.state.currentIndex]
-            .map((wo) => React.createElement(workOrderGroup_1.default, Object.assign({}, wo)));
+            .map((wo) => React.createElement(workOrderGroup_1.default, Object.assign({}, wo, { key: `${wo.status}` })));
     }
     componentDidMount() {
         this.update();
@@ -410,29 +410,48 @@ exports.App = App;
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(0);
 const workOrder_1 = __webpack_require__(6);
-const WorkOrderGroup = (props) => React.createElement("section", { className: "group" },
-    React.createElement("h2", null, props.status),
-    React.createElement("table", null,
-        React.createElement("colgroup", null,
-            React.createElement("col", { className: "asset" }),
-            React.createElement("col", { className: "wo" }),
-            React.createElement("col", { className: "open" }),
-            React.createElement("col", { className: "down" }),
-            React.createElement("col", { className: "description" }),
-            React.createElement("col", { className: "employee" }),
-            React.createElement("col", { className: "start" }),
-            React.createElement("col", { className: "op" })),
-        React.createElement("thead", null,
-            React.createElement("tr", null,
-                React.createElement("th", null, "Asset #"),
-                React.createElement("th", null, "WO #"),
-                React.createElement("th", null, "Open"),
-                React.createElement("th", null, "Down Time"),
-                React.createElement("th", null, "Description"),
-                React.createElement("th", null, "Employee"),
-                React.createElement("th", null, "Time Started"),
-                React.createElement("th", null, "Op. Code"))),
-        React.createElement("tbody", null, props.workOrders.map((wo) => React.createElement(workOrder_1.default, Object.assign({}, wo))))));
+const WorkOrderGroup = (props) => {
+    const hasStatus = props.workOrders.filter((wo) => wo.workStatus !== null).length > 0;
+    const renderEmployeeColInfo = () => {
+        if (hasStatus) {
+            return [
+                React.createElement("col", { className: "employee", key: "employee" }),
+                React.createElement("col", { className: "start", key: "start" }),
+                React.createElement("col", { className: "op", key: "op" })
+            ];
+        }
+        return null;
+    };
+    const renderEmployeeHeaderInfo = () => {
+        if (hasStatus) {
+            return [
+                React.createElement("th", { key: "emp" }, "Employee"),
+                React.createElement("th", { key: "ts" }, "Time Started"),
+                React.createElement("th", { key: "opcode" }, "Op. Code")
+            ];
+        }
+        return null;
+    };
+    return React.createElement("section", { className: "group" },
+        React.createElement("h2", null, props.status),
+        React.createElement("table", { className: hasStatus ? 'status' : 'no-status' },
+            React.createElement("colgroup", null,
+                React.createElement("col", { className: "asset" }),
+                React.createElement("col", { className: "wo" }),
+                React.createElement("col", { className: "open" }),
+                React.createElement("col", { className: "down" }),
+                React.createElement("col", { className: "description" }),
+                renderEmployeeColInfo()),
+            React.createElement("thead", null,
+                React.createElement("tr", null,
+                    React.createElement("th", null, "Asset #"),
+                    React.createElement("th", null, "WO #"),
+                    React.createElement("th", null, "Open"),
+                    React.createElement("th", null, "Down Time"),
+                    React.createElement("th", null, "Description"),
+                    renderEmployeeHeaderInfo())),
+            React.createElement("tbody", null, props.workOrders.map((wo) => React.createElement(workOrder_1.default, Object.assign({}, wo, { key: `${wo.assetNumber}-${wo.workOrderNumber}` }))))));
+};
 exports.default = WorkOrderGroup;
 
 
@@ -453,14 +472,12 @@ const renderDescription = (description) => {
 };
 const renderWorkStatus = (ws) => {
     if (ws == null) {
-        return [
-            React.createElement("td", { colSpan: 3, className: "no-work-status status split" })
-        ];
+        return null;
     }
     return [
-        React.createElement("td", { className: "status split" }, ws.employeeName),
-        React.createElement("td", { className: "status" }, ws.timeStarted),
-        React.createElement("td", { className: "status" }, ws.operatorCode)
+        React.createElement("td", { className: "status split", key: "en" }, ws.employeeName),
+        React.createElement("td", { className: "status", key: "ts" }, ws.timeStarted),
+        React.createElement("td", { className: "status", key: "oc" }, ws.operatorCode)
     ];
 };
 const WorkOrder = (props) => React.createElement("tr", null,

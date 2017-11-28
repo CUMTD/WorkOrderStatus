@@ -20,14 +20,12 @@ const renderDescription: (description: string[]) => JSX.Element = (description: 
 
 const renderWorkStatus: (ws: IWorkStatus) => JSX.Element[] = (ws: IWorkStatus) => {
     if (ws == null) {
-        return [
-            <td colSpan={3} className="no-work-status status split"></td>
-        ];
+		return null;
     }
     return [
-        <td className="status split">{ws.employeeName}</td>,
-        <td className="status">{ws.timeStarted}</td>,
-        <td className="status">{ws.operatorCode}</td>
+        <td className="status split" key="en">{ws.employeeName}</td>,
+        <td className="status" key="ts">{ws.timeStarted}</td>,
+        <td className="status" key="oc">{ws.operatorCode}</td>
     ];
 };
 
