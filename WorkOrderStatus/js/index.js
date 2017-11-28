@@ -393,7 +393,7 @@ class App extends react_1.PureComponent {
 App.UPDATE_INTERVAL = 10000;
 App.PAGE_HEIGHT = 1040;
 App.HEIGHTS = {
-    header: 47,
+    header: 51,
     th: 38,
     tr: 40,
     bottomMargin: 30

@@ -27,7 +27,7 @@ export class App extends PureComponent<Props, State> {
 	private static readonly PAGE_HEIGHT: number = 1040;
 
 	private static readonly HEIGHTS: Heights = {
-		header: 47,
+		header: 51,
 		th: 38,
 		tr: 40,
 		bottomMargin: 30
