@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,14 +20,26 @@ namespace WorkOrderStatus.Controllers.API
 
 		[HttpGet]
 	    [Route("open")]
-	    public async Task<IEnumerable<WorkOrder>> Open()
+	    public async Task<IEnumerable<WorkOrderGroup>> Open()
 		{
+			// get all open orders from db
 			var orders = await FleetnetContext
 				.GetOpenOrdersAsync()
 				.ConfigureAwait(false);
 
-			return orders
-				.Select(o => new WorkOrder(o));
+			// convert to model
+			var converted = orders
+				.Select(o => new WorkOrder(o))
+				.OrderBy(wo => wo);
+
+			// group
+			return converted
+				.GroupBy(wo => wo.CompletionStatus)
+				.Select(g => new WorkOrderGroup(g.Key, g))
+				.OrderBy(wog => wog.SortOrder);
 		}
+
+
+
     }
 }

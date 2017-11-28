@@ -1,14 +1,69 @@
-.work-order {
-	overflow: hidden;
-	background: red;
-	display: flex;
-	flex-flow: column nowrap;
+@import './_partials.scss';
 
-	.heading, .main {
-		flex: 0 0 auto;
+table {
+	$cell-padding: 4px;
+	width: 100%;
+	border-collapse: collapse;
+	font-size: $cell-padding * 5;
+
+	th {
+		text-align: left;
+		padding: ($cell-padding * 2) $cell-padding ($cell-padding / 2) $cell-padding;
+		vertical-align: bottom;
+		border-bottom: ($cell-padding / 2) solid rgba($black, 0.6);
+		text-transform: uppercase;
+	}
+
+	td {
+		border-bottom: 1px solid rgba($black, 0.4);
+		padding: ($cell-padding * 1.5) $cell-padding;
+	}
+
+	tbody > tr:last-of-type td {
+		border-bottom-color: transparent;
+	}
+
+	.asset {
+		width: 110px;
+	}
+
+	.wo {
+		width: 150px;
+	}
+
+	.open {
+		width: 250px;
+	}
+
+	.down {
+		width: 170px;
+	}
+
+	.description-cell > span {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: block;
+		width: 640px;
+	}
+
+	.employee {
+		width: 160px;
+	}
+
+	.start {
+		width: 250px;
+	}
+
+	.op {
+		width: 130px;
+	}
+
+	.split {
+		border-left: 1px solid rgba($black, 0.1);
 	}
 
 	.status {
-		flex: 1 1 auto;
+		background: rgba($black, 0.1);
 	}
 }

@@ -1,7 +1,14 @@
 .work-orders {
-	outline: 2px solid yellow;
-	display: grid;
-	grid-template-rows: auto;
-	grid-template-columns: repeat(6, 1fr);
-	grid-gap: 20px;
+	display: block;
+	padding: 20px;
+
+	h2{
+		font-size: 34px;
+		margin: 0;
+	}
+
+	.group {
+		margin: 0 0 30px 0;
+		overflow: hidden;
+	}
 }

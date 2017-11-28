@@ -1,0 +1,9 @@
+@import './_partials.scss';
+
+html {
+	font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+html, body, main {
+	color: $black;
+}

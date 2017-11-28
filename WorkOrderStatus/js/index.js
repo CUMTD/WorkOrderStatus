@@ -302,28 +302,102 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = __webpack_require__(1);
 const React = __webpack_require__(0);
 const react_1 = __webpack_require__(0);
-const workOrder_1 = __webpack_require__(5);
-const workOrderApi_1 = __webpack_require__(6);
+const workOrderGroup_1 = __webpack_require__(5);
+const workOrderApi_1 = __webpack_require__(7);
 class App extends react_1.PureComponent {
     constructor(props, context) {
         super(props, context);
         this.update = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const workOrders = yield workOrderApi_1.WorkOrderApi.getOpen();
-            this.setState(Object.assign({}, this.state, { workOrders }));
+            console.log('updating');
+            try {
+                const groups = yield workOrderApi_1.WorkOrderApi.getOpen();
+                const pages = this.toPages(groups);
+                this.setState(Object.assign({}, this.state, { pages, currentIndex: 0 }), this.startTimer);
+            }
+            catch (ex) {
+                console.log('Can\'t load work orders', ex);
+            }
         });
+        this.calculateGroupHeight = (group) => {
+            if (group == null || group.workOrders.length === 0) {
+                return 0;
+            }
+            const heights = App.HEIGHTS;
+            const base = heights['header'] + heights['th'] + heights['bottomMargin'];
+            return base + (heights['tr'] * group.workOrders.length);
+        };
+        this.toPages = (groups) => {
+            if (groups == null || groups.length === 0) {
+                return [];
+            }
+            const pages = [];
+            let remainingHeight = App.PAGE_HEIGHT;
+            let currentPage = [];
+            for (let i = 0; i < groups.length; i++) {
+                const group = groups[i];
+                const pageHeight = this.calculateGroupHeight(group);
+                remainingHeight -= pageHeight;
+                // we have to add at least one group to a page
+                if (currentPage.length > 0 && remainingHeight <= 0) {
+                    pages.push(currentPage);
+                    currentPage = [group];
+                    remainingHeight = App.PAGE_HEIGHT - remainingHeight;
+                }
+                else {
+                    currentPage.push(group);
+                }
+            }
+            pages.push(currentPage);
+            return pages;
+        };
+        this.clearTimer = () => {
+            if (this.timer != null) {
+                window.clearTimeout(this.timer);
+            }
+        };
+        this.startTimer = () => {
+            this.clearTimer();
+            this.setState(Object.assign({}, this.state, { currentIndex: 0 }), () => {
+                this.timer = window.setTimeout(this.tickTimer, App.UPDATE_INTERVAL);
+            });
+        };
+        this.tickTimer = () => {
+            this.clearTimer();
+            if (this.state.currentIndex !== 0 && this.state.currentIndex === this.state.pages.length - 1) {
+                this.update();
+            }
+            else {
+                this.setState(Object.assign({}, this.state, { currentIndex: this.state.currentIndex + 1 }), () => {
+                    this.timer = window.setTimeout(this.tickTimer, App.UPDATE_INTERVAL);
+                });
+            }
+        };
         this.state = {
-            workOrders: []
+            currentIndex: 0,
+            pages: []
         };
     }
     render() {
-        return this.state.workOrders.map((wo) => React.createElement(workOrder_1.default, Object.assign({}, wo)));
+        if (this.state.pages == null || this.state.pages.length === 0 || this.state.pages[0] == null || this.state.pages[0].length === 0) {
+            return new Array();
+        }
+        return this
+            .state
+            .pages[this.state.currentIndex]
+            .map((wo) => React.createElement(workOrderGroup_1.default, Object.assign({}, wo)));
     }
     componentDidMount() {
-        window.setInterval(this.update, App.UPDATE_INTERVAL);
         this.update();
     }
 }
 App.UPDATE_INTERVAL = 10000;
+App.PAGE_HEIGHT = 1040;
+App.HEIGHTS = {
+    header: 47,
+    th: 38,
+    tr: 40,
+    bottomMargin: 30
+};
 exports.App = App;
 
 
@@ -335,19 +409,72 @@ exports.App = App;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(0);
-const WorkOrderComponent = (props) => React.createElement("div", { className: "work-order" },
-    React.createElement("div", { className: "heading" },
-        React.createElement("h2", null,
-            React.createElement("span", { className: "an" }, props.assetNumber),
-            " \u2013 ",
-            React.createElement("span", { className: "on" }, props.workOrderNumber))),
-    React.createElement("div", { className: "main" }),
-    React.createElement("div", { className: "status" }, props.completionStatus));
-exports.default = WorkOrderComponent;
+const workOrder_1 = __webpack_require__(6);
+const WorkOrderGroup = (props) => React.createElement("section", { className: "group" },
+    React.createElement("h2", null, props.status),
+    React.createElement("table", null,
+        React.createElement("colgroup", null,
+            React.createElement("col", { className: "asset" }),
+            React.createElement("col", { className: "wo" }),
+            React.createElement("col", { className: "open" }),
+            React.createElement("col", { className: "down" }),
+            React.createElement("col", { className: "description" }),
+            React.createElement("col", { className: "employee" }),
+            React.createElement("col", { className: "start" }),
+            React.createElement("col", { className: "op" })),
+        React.createElement("thead", null,
+            React.createElement("tr", null,
+                React.createElement("th", null, "Asset #"),
+                React.createElement("th", null, "WO #"),
+                React.createElement("th", null, "Open"),
+                React.createElement("th", null, "Down Time"),
+                React.createElement("th", null, "Description"),
+                React.createElement("th", null, "Employee"),
+                React.createElement("th", null, "Time Started"),
+                React.createElement("th", null, "Op. Code"))),
+        React.createElement("tbody", null, props.workOrders.map((wo) => React.createElement(workOrder_1.default, Object.assign({}, wo))))));
+exports.default = WorkOrderGroup;
 
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __webpack_require__(0);
+const renderDescription = (description) => {
+    if (description == null || description.length === 0) {
+        return React.createElement("td", null);
+    }
+    return React.createElement("td", { className: "description-cell" },
+        React.createElement("span", null, ''.concat(...description)));
+};
+const renderWorkStatus = (ws) => {
+    if (ws == null) {
+        return [
+            React.createElement("td", { colSpan: 3, className: "no-work-status status split" })
+        ];
+    }
+    return [
+        React.createElement("td", { className: "status split" }, ws.employeeName),
+        React.createElement("td", { className: "status" }, ws.timeStarted),
+        React.createElement("td", { className: "status" }, ws.operatorCode)
+    ];
+};
+const WorkOrder = (props) => React.createElement("tr", null,
+    React.createElement("td", null, props.assetNumber),
+    React.createElement("td", null, props.workOrderNumber),
+    React.createElement("td", null, props.open),
+    React.createElement("td", null, props.downTime),
+    renderDescription(props.description),
+    renderWorkStatus(props.workStatus));
+exports.default = WorkOrder;
+
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -365,6 +492,9 @@ var WorkOrderApi;
             };
             const request = new Request(OPEN_URL, init);
             const response = yield fetch(request);
+            if (response.status !== 200) {
+                throw response.status;
+            }
             const json = (yield response.json());
             return json;
         });

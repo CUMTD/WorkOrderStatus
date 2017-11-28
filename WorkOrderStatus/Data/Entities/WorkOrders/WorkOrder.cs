@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace WorkOrderStatus.Data.Entities.WorkOrders
@@ -35,5 +35,18 @@ namespace WorkOrderStatus.Data.Entities.WorkOrders
 
 		public virtual CompletionStatus CompletionStatus { get; set; }
 		public virtual ICollection<EmployeeAssignment> EmployeeAssignments { get; set; }
+
+		public TimeSpan? Downtime
+		{
+			get
+			{
+				if (OutOfService.HasValue && !ReturnToService.HasValue)
+				{
+					return DateTime.Now - OutOfService.Value;
+				}
+				return null;
+			}
+		}
+
 	}
 }

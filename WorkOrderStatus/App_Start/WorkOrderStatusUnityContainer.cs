@@ -1,4 +1,5 @@
-﻿using Unity;
+using System;
+using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
 using WorkOrderStatus.Data;
@@ -7,19 +8,19 @@ namespace WorkOrderStatus
 {
 	public static class WorkOrderStatusUnityContainer
 	{
-		public static IUnityContainer CreateContainer()
+		private static readonly Lazy<IUnityContainer> _container = new Lazy<IUnityContainer>(WorkOrderStatusUnityContainer.CreateContainer);
+
+		public static IUnityContainer GetConfiguredContainer() => _container.Value;
+
+		private static IUnityContainer CreateContainer()
 		{
 			var container = new UnityContainer();
 			ConfigureEF(container);
 			return container;
 		}
 
-		private static void ConfigureEF(IUnityContainer container)
-		{
-			container.RegisterType<IFleetnetContext, FleetnetContext>(
-				new TransientLifetimeManager(),
-				new InjectionFactory(f=> new FleetnetContext("DefaultConnectionString")));
-		}
-
+		// DefaultConnectionString
+		private static void ConfigureEF(IUnityContainer container) => container.RegisterType<IFleetnetContext, FleetnetContext>(
+			new TransientLifetimeManager(), new InjectionConstructor("DefaultConnectionString"));
 	}
 }

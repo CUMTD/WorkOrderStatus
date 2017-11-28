@@ -12,5 +12,10 @@ export interface IWorkOrder {
     downTime: string;
     description: string[];
     workStatus: IWorkStatus;
-    completionStatus: string;
+}
+
+export interface IWorkOrderGroup {
+    status: string;
+    sortOrder: number;
+    workOrders: IWorkOrder[];
 }
