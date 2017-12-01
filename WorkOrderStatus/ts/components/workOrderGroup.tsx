@@ -57,7 +57,11 @@ const WorkOrderGroup: SFC<Props> = (props: Props) => {
 				</tr>
 			</thead>
 			<tbody>
-				{props.workOrders.map((wo: IWorkOrder) => <WorkOrder {...wo} key={`${wo.assetNumber}-${wo.workOrderNumber}`} />)}
+				{props.workOrders.map((wo: IWorkOrder) => <WorkOrder
+					{...wo}
+					hasStatus={hasStatus}
+					key={`${wo.assetNumber}-${wo.workOrderNumber}`}
+				/>)}
 			</tbody>
 		</table>
 	</section>;

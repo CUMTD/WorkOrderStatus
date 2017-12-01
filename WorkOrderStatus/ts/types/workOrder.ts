@@ -11,7 +11,7 @@ export interface IWorkOrder {
     open: string;
     downTime: string;
     description: string[];
-    workStatus: IWorkStatus;
+    workStatus: IWorkStatus[];
 }
 
 export interface IWorkOrderGroup {

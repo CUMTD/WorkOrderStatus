@@ -22,14 +22,15 @@ type Heights = { [key: string]: number };
 export class App extends PureComponent<Props, State> {
 
 
-	private static readonly UPDATE_INTERVAL: number = 10000;
+	private static readonly UPDATE_INTERVAL: number = 60000;
 
 	private static readonly PAGE_HEIGHT: number = 1040;
 
 	private static readonly HEIGHTS: Heights = {
 		header: 51,
 		th: 38,
-		tr: 40,
+		trPadding: 13,
+		trItem: 27,
 		bottomMargin: 30
 	};
 
@@ -77,7 +78,16 @@ export class App extends PureComponent<Props, State> {
 		const heights: Heights = App.HEIGHTS;
 		const base: number = heights['header'] + heights['th'] + heights['bottomMargin'];
 
-		return base + (heights['tr'] * group.workOrders.length);
+		let totalRowHeight: number = 0;
+		for (let wo of group.workOrders) {
+			let rows: number = 1;
+			if (wo.workStatus && wo.workStatus.length > 0) {
+				rows = Math.max(1, wo.workStatus.length);
+			}
+			totalRowHeight += heights['trPadding'] + (heights['trItem'] * rows);
+		}
+
+		return base + totalRowHeight;
 	};
 
 	private toPages: (groups: IWorkOrderGroup[]) => IWorkOrderGroup[][] = (groups: IWorkOrderGroup[]) => {

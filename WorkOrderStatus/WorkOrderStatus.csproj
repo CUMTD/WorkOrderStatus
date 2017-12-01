@@ -179,6 +179,7 @@
     <Content Include="scss\site\base.scss" />
     <Content Include="scss\site\colors.scss" />
     <Content Include="scss\site\bg.scss" />
+    <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

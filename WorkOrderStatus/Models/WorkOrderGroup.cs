@@ -19,10 +19,8 @@ namespace WorkOrderStatus.Models
 
 		public WorkOrderGroup(string status, IEnumerable<WorkOrder> workOrders)
 		{
-			if (status != null)
-			{
-				Status = _textInfo.ToTitleCase(status.ToLower());
-			}
+			Status = status != null ? _textInfo.ToTitleCase(status.ToLower()) : "Unknown Status";
+
 			WorkOrders = (workOrders ?? Enumerable.Empty<WorkOrder>())
 				.OrderBy(wo => wo)
 				.ToArray();

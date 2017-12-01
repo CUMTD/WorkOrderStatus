@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -11,22 +11,19 @@ namespace WorkOrderStatus.Models
 	    public string OperatorCode { get; set; }
 	    public string EstimatedCompletionTime { get; set; }
 
-		public static WorkStatus Create(IEnumerable<Data.Entities.WorkOrders.EmployeeAssignment> assignments)
+		public static WorkStatus[] ConvertAll(IEnumerable<Data.Entities.WorkOrders.EmployeeAssignment> assignments)
 		{
 			var enumeratedAssignments = assignments?.ToArray() ?? new Data.Entities.WorkOrders.EmployeeAssignment[0];
-			if (enumeratedAssignments.Length > 0)
-			{
-				var assignment = enumeratedAssignments[0];
-				return new WorkStatus
-				{
-					EmployeeName = assignment.Employee?.EmployeeShortName,
-					TimeStarted = assignment.TimeStarted?.ToString(CultureInfo.InvariantCulture),
-					OperatorCode = assignment.OperationCode,
-					EstimatedCompletionTime = null
-				};
-			}
-			return null;
+			return enumeratedAssignments.Length > 0 ? enumeratedAssignments.Select(Convert).ToArray() : null;
 		}
+
+		private static WorkStatus Convert(Data.Entities.WorkOrders.EmployeeAssignment assignment) => new WorkStatus
+		{
+			EmployeeName = assignment.Employee?.EmployeeShortName,
+			TimeStarted = assignment.TimeStarted?.ToString(CultureInfo.InvariantCulture),
+			OperatorCode = assignment.OperationCode,
+			EstimatedCompletionTime = null
+		};
 
 	}
 }

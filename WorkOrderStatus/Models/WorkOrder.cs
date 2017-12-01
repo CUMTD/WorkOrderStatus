@@ -10,7 +10,7 @@ namespace WorkOrderStatus.Models
 		public string Open { get; set; }
 		public string DownTime { get; set; }
 		public string[] Description { get; set; }
-		public WorkStatus WorkStatus { get; set; }
+		public WorkStatus[] WorkStatus { get; set; }
 		public string CompletionStatus { get; set; }
 
 		public WorkOrder() { }
@@ -25,7 +25,7 @@ namespace WorkOrderStatus.Models
 				?.Description
 				?.Replace("\r", string.Empty)
 				?.Split('\n') ?? new  string[0];
-			WorkStatus = WorkStatus.Create(wo.EmployeeAssignments);
+			WorkStatus = Models.WorkStatus.ConvertAll(wo.EmployeeAssignments);
 			CompletionStatus = wo.CompletionStatus?.CompletionDescription;
 		}
 

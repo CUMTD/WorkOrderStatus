@@ -324,7 +324,15 @@ class App extends react_1.PureComponent {
             }
             const heights = App.HEIGHTS;
             const base = heights['header'] + heights['th'] + heights['bottomMargin'];
-            return base + (heights['tr'] * group.workOrders.length);
+            let totalRowHeight = 0;
+            for (let wo of group.workOrders) {
+                let rows = 1;
+                if (wo.workStatus && wo.workStatus.length > 0) {
+                    rows = Math.max(1, wo.workStatus.length);
+                }
+                totalRowHeight += heights['trPadding'] + (heights['trItem'] * rows);
+            }
+            return base + totalRowHeight;
         };
         this.toPages = (groups) => {
             if (groups == null || groups.length === 0) {
@@ -390,12 +398,13 @@ class App extends react_1.PureComponent {
         this.update();
     }
 }
-App.UPDATE_INTERVAL = 10000;
+App.UPDATE_INTERVAL = 60000;
 App.PAGE_HEIGHT = 1040;
 App.HEIGHTS = {
     header: 51,
     th: 38,
-    tr: 40,
+    trPadding: 13,
+    trItem: 27,
     bottomMargin: 30
 };
 exports.App = App;
@@ -450,7 +459,7 @@ const WorkOrderGroup = (props) => {
                     React.createElement("th", null, "Down Time"),
                     React.createElement("th", null, "Description"),
                     renderEmployeeHeaderInfo())),
-            React.createElement("tbody", null, props.workOrders.map((wo) => React.createElement(workOrder_1.default, Object.assign({}, wo, { key: `${wo.assetNumber}-${wo.workOrderNumber}` }))))));
+            React.createElement("tbody", null, props.workOrders.map((wo) => React.createElement(workOrder_1.default, Object.assign({}, wo, { hasStatus: hasStatus, key: `${wo.assetNumber}-${wo.workOrderNumber}` }))))));
 };
 exports.default = WorkOrderGroup;
 
@@ -470,14 +479,20 @@ const renderDescription = (description) => {
     return React.createElement("td", { className: "description-cell" },
         React.createElement("span", null, ''.concat(...description)));
 };
-const renderWorkStatus = (ws) => {
-    if (ws == null) {
+const renderWorkStatus = (ws, hasStatus) => {
+    const toKey = (s) => `${s.employeeName}-${s.timeStarted}-${s.operatorCode}`;
+    if (!hasStatus) {
         return null;
     }
+    if (ws == null) {
+        return [
+            React.createElement("td", { className: "status hidden", colSpan: 3, key: "none" })
+        ];
+    }
     return [
-        React.createElement("td", { className: "status split", key: "en" }, ws.employeeName),
-        React.createElement("td", { className: "status", key: "ts" }, ws.timeStarted),
-        React.createElement("td", { className: "status", key: "oc" }, ws.operatorCode)
+        React.createElement("td", { className: "status split", key: "en" }, ws.map((s) => React.createElement("span", { className: "row", key: toKey(s) }, s.employeeName))),
+        React.createElement("td", { className: "status", key: "ts" }, ws.map((s) => React.createElement("span", { className: "row", key: toKey(s) }, s.timeStarted))),
+        React.createElement("td", { className: "status", key: "oc" }, ws.map((s) => React.createElement("span", { className: "row", key: toKey(s) }, s.operatorCode)))
     ];
 };
 const WorkOrder = (props) => React.createElement("tr", null,
@@ -486,7 +501,7 @@ const WorkOrder = (props) => React.createElement("tr", null,
     React.createElement("td", null, props.open),
     React.createElement("td", null, props.downTime),
     renderDescription(props.description),
-    renderWorkStatus(props.workStatus));
+    renderWorkStatus(props.workStatus, props.hasStatus));
 exports.default = WorkOrder;
 
 
