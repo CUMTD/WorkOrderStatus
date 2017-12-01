@@ -19,9 +19,9 @@ table {
 	}
 
 	td {
+		vertical-align: top;
 		border-bottom: 1px solid rgba($black, 0.4);
 		padding: ($cell-padding * 1.5) $cell-padding;
-		vertical-align: top;
 	}
 
 	tbody > tr:last-of-type td {

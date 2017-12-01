@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using WorkOrderStatus.Extensions;
 
 namespace WorkOrderStatus.Models
@@ -19,7 +20,7 @@ namespace WorkOrderStatus.Models
 		{
 			AssetNumber = wo.DestinationNo;
 			WorkOrderNumber = wo.WorkOrderNo;
-			Open = wo.Open?.ToString();
+			Open = wo.Open.FormatTodayTime();
 			DownTime = wo.Downtime.ToReadableString();
 			Description = wo
 				?.Description
@@ -27,6 +28,18 @@ namespace WorkOrderStatus.Models
 				?.Split('\n') ?? new  string[0];
 			WorkStatus = Models.WorkStatus.ConvertAll(wo.EmployeeAssignments);
 			CompletionStatus = wo.CompletionStatus?.CompletionDescription;
+		}
+
+		public string FormatOpenTime(DateTime? open)
+		{
+			if (!open.HasValue)
+			{
+				return null;
+			}
+
+			return open.Value.Date == DateTime.Now.Date ?
+				open.Value.ToShortTimeString() :
+				open.Value.ToString(CultureInfo.CurrentCulture);
 		}
 
 		public int CompareTo(WorkOrder other)

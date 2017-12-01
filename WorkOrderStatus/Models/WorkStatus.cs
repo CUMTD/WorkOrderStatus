@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using WorkOrderStatus.Extensions;
 
 namespace WorkOrderStatus.Models
 {
@@ -20,7 +20,7 @@ namespace WorkOrderStatus.Models
 		private static WorkStatus Convert(Data.Entities.WorkOrders.EmployeeAssignment assignment) => new WorkStatus
 		{
 			EmployeeName = assignment.Employee?.EmployeeShortName,
-			TimeStarted = assignment.TimeStarted?.ToString(CultureInfo.InvariantCulture),
+			TimeStarted = assignment.TimeStarted.FormatTodayTime(),
 			OperatorCode = assignment.OperationCode,
 			EstimatedCompletionTime = null
 		};
