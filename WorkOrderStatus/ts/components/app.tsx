@@ -21,7 +21,6 @@ type Heights = { [key: string]: number };
 
 export class App extends PureComponent<Props, State> {
 
-
 	private static readonly UPDATE_INTERVAL: number = 60000;
 
 	private static readonly PAGE_HEIGHT: number = 1040;

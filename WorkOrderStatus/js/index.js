@@ -276,8 +276,10 @@ class Index {
         this.render = () => reactDom.render(this.jsxElement, this.domElement);
         this.domElement = document.getElementById(elementName);
         this.jsxElement = React.createElement(App_1.App, null);
+        window.setTimeout(() => location.reload(), Index.RESET_MINUTES * 60000);
     }
 }
+Index.RESET_MINUTES = 120;
 const init = () => {
     const app = new Index('app');
     app.render();
