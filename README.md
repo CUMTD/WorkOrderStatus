@@ -8,6 +8,8 @@ It is intended to be used on a shop floor for mechanics to track open work.
 
 The application has been tested in Google Chrome.
 
+![Screenshot of the Application](./screenshot.png)
+
 ## Building
 ### Prerequisites
 * [Visual Studio 2017](https://www.visualstudio.com/downloads/)
