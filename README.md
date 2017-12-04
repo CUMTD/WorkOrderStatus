@@ -21,7 +21,7 @@ The application has been tested in Google Chrome.
 3. run `yarn install`
 4. *Optional*: run `gulp build`
 5. Open Visual Studio 2017 and open the solution ([WorkOrderStatus.sln](./WorkOrderStatus.sln)).
-6. Add a `connectionStrings.config` file. See: [Connecting to the Database](#Connecting-to-the-Database).
+6. Add a `connectionStrings.config` file. See: [Connecting to the Database](#connecting-to-the-database).
 7. Build and run.
 
 ### Building Static Assets
