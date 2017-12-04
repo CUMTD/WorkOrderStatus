@@ -1,6 +1,40 @@
 # Work Order Status
 
-## Connecting to the Database
+
+## Background Info
+This web application reads open work orders from a FleetNet database
+and displays them in tables.
+It acts as a replacement for the FleetNet *Work Status* screen.
+It is intended to be used on a shop floor for mechanics to track open work.
+
+The application has been tested in Google Chrome.
+
+## Building
+### Prerequisites
+* [Visual Studio 2017](https://www.visualstudio.com/downloads/)
+* [.NET Framework 4.7](https://www.microsoft.com/net/download/dotnet-framework-runtime/net47)
+* [Yarn](https://yarnpkg.com/en/) (NPM may work, but it is untested.)
+* For Deployment: [IIS](https://www.iis.net/)
+* 
+### Building the Application
+1. Clone or download the application.
+2. Open a shell and navigate to the [WorkOrderStatus](./WorkOrderStatus/) directory inside the project.
+3. run `yarn install`
+4. *Optional*: run `gulp build`
+5. Open Visual Studio 2017 and open the solution ([WorkOrderStatus.sln](./WorkOrderStatus.sln)).
+6. Add a `connectionStrings.config` file. See: [Connecting to the Database](#Connecting-to-the-Database).
+7. Build and run.
+
+### Building Static Assets
+The application uses Gulp and Webpack to build and package
+TypeScript and SCSS files into JavaScript and CSS files.
+It uses Visual Studio's builtin *Task Runner Explorer*
+to automatically build these files when the solution is opened.
+
+A static asset build can also be triggered from the command line by running
+`gulp build` or `gulp watch` from the WorkOrderStatus directory.
+
+### (Connecting-to-the-Database)
 
 Add a `connectionStrings.config` file to the `WorkOrderStatus` directory.
 The contents of the file should look something like this:
@@ -23,9 +57,10 @@ There are several values that will be specific to your server:
 | USER_NAME   | A SQL user with read only access to the database.                               |
 | PW          | The password for the SQL user.                                                  |
 
-
-## Original SQL From Fleetnet
-The original SQL from Fleetnet (cleaned up) is as follows:
+## Reference
+### Original SQL From Fleetnet
+The original SQL for the FleetNet *Work Status* screen (cleaned up)
+is as follows:
 
 ```SQL
 SELECT
