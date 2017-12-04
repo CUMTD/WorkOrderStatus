@@ -10,7 +10,7 @@ export interface IWorkOrder {
     workOrderNumber: string;
     open: string;
     downTime: string;
-    description: string[];
+    description: string;
     workStatus: IWorkStatus[];
 }
 

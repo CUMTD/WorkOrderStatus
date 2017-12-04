@@ -8,18 +8,6 @@ interface Props extends IWorkOrder {
 	hasStatus: boolean;
 }
 
-const renderDescription: (description: string[]) => JSX.Element = (description: string[]) => {
-	if (description == null || description.length === 0) {
-		return <td></td>;
-	}
-	return <td className="description-cell">
-		<span>
-			{''.concat(...description)}
-		</span>
-	</td>;
-
-};
-
 const renderWorkStatus: (ws: IWorkStatus[], hasStatus: boolean) => JSX.Element[] = (ws: IWorkStatus[], hasStatus: boolean) => {
 	const toKey: (s: IWorkStatus) => string = (s: IWorkStatus) => `${s.employeeName}-${s.timeStarted}-${s.operatorCode}`;
 
@@ -44,7 +32,7 @@ const WorkOrder: SFC<Props> = (props: Props) => <tr>
 	<td>{props.workOrderNumber}</td>
 	<td>{props.open}</td>
 	<td>{props.downTime}</td>
-	{renderDescription(props.description)}
+	<td className="description-cell"><span>{props.description}</span></td>
 	{renderWorkStatus(props.workStatus, props.hasStatus)}
 </tr>;
 
