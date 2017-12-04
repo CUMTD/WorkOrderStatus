@@ -1,6 +1,5 @@
 # Work Order Status
 
-
 ## Background Info
 This web application reads open work orders from a FleetNet database
 and displays them in tables.
@@ -34,7 +33,7 @@ to automatically build these files when the solution is opened.
 A static asset build can also be triggered from the command line by running
 `gulp build` or `gulp watch` from the WorkOrderStatus directory.
 
-### (Connecting-to-the-Database)
+### Connecting to the Database
 
 Add a `connectionStrings.config` file to the `WorkOrderStatus` directory.
 The contents of the file should look something like this:
