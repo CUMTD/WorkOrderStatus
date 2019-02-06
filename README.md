@@ -16,7 +16,7 @@ The application has been tested in Google Chrome.
 * [.NET Framework 4.7](https://www.microsoft.com/net/download/dotnet-framework-runtime/net47)
 * [Yarn](https://yarnpkg.com/en/) (NPM may work, but it is untested.)
 * For Deployment: [IIS](https://www.iis.net/)
-* 
+
 ### Building the Application
 1. Clone or download the application.
 2. Open a shell and navigate to the [WorkOrderStatus](./WorkOrderStatus/) directory inside the project.
