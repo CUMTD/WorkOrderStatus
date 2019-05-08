@@ -6,7 +6,6 @@ const path = require('path');
 const plumber = require('gulp-plumber');
 const sourcemaps = require('gulp-sourcemaps');
 const webpack = require('webpack');
-const webpackConf = require('./webpack.config.js');
 const webpackStream = require('webpack-stream');
 
 const sass = require('gulp-sass');
@@ -25,50 +24,81 @@ const cssPath = [
 	`!${path.join(__dirname, 'scss/**/_*.scss')}`
 ];
 
-// build typescript using webpack
-gulp.task(
-	'scripts',
-	() => gulp
-		.src('!') // we use webpack.config.js to specify our entry points
-		.pipe(plumber())
-		.pipe(webpackStream(webpackConf, webpack))
-		.pipe(gulp.dest(jsDest)));
+// decide if we are in dev or production mode
+const devMode = (() => {
+	let dev = true;
+	const i = process.argv.indexOf('--production');
+	if (i > -1) {
+		dev = false;
+	}
+	return dev;
+})();
 
-gulp.task('css', () => {
-	const processors = [
+const getWebpackStream = () => {
+	// get the appropriate config file
+	const conf = devMode ?
+		require('./wp-dev.webpack') :
+		require('./wp-prod.webpack');
+		// we want to use the version of webpack installed by yarn
+	return webpackStream(conf, require('webpack'));
+};
+
+const scripts = () => gulp
+	.src('WE DO NOT WANT TO MATCH ANYTHING HERE', { allowEmpty: true }) // we use a custom config file webpack.config.js
+	.pipe(plumber())
+	.pipe(getWebpackStream())
+	.pipe(gulp.dest(jsDest));
+scripts.flags = {
+	'--production': 'Puts build into production mode'
+};
+
+const css = () => gulp
+	.src(cssPath, { cwd: true })
+	.pipe(plumber())
+	.pipe(sourcemaps.init())
+	.pipe(
+		sass()
+			.on('error', sass.logError))
+	.pipe(postcss([
 		mQPacker,
 		autoprefixer({
 			browsers: [
 				'> 1% in US',
-				'not ie <= 10'
+				'not ie <= 11'
 			],
-			flexbox: 'no-2009',
-			grid: true
+			flexbox: false,
+			grid: false
 		}),
 		cssnano({
 			autoprefixer: false
 		})
-	];
+	]))
+	.pipe(sourcemaps.write('.'))
+	.pipe(gulp.dest(cssDest));
 
-	return gulp
-		.src(cssPath)
-		.pipe(plumber())
-		.pipe(sourcemaps.init())
-		.pipe(
-		sass()
-			.on('error', sass.logError))
-		.pipe(postcss(processors))
-		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest(cssDest));
-});
+const build = gulp.parallel(scripts, css);
+build.description = 'Build scripts and css.';
+build.flags = {
+	'--production': 'Puts build into production mode'
+};
 
-gulp.task('build', ['scripts', 'css']);
+const clearConsole = () => clear();
 
-gulp.task('default', ['build']);
+const watchChanges = () => {
+	gulp.watch('scss/**/*.scss', gulp.series(clearConsole, css));
+	gulp.watch(['ts/**/*.tsx', 'ts/**/*.ts'], gulp.series(clearConsole, scripts));
+};
+watchChanges.displayName = 'watch';
 
-gulp.task('clear', () => clear());
+const watch = gulp.series(build, watchChanges);
+watch.description = 'Build then watch files for changes';
+watch.flags = {
+	'--production': 'Puts build into production mode'
+};
 
-gulp.task('watch', ['build'], () => {
-	gulp.watch('scss/**/*.scss', ['clear', 'css']);
-	gulp.watch(['ts/**/*.tsx', 'ts/**/*.ts'], ['clear', 'scripts']);
-});
+exports.css = css;
+exports.scripts = scripts;
+exports.clear = clearConsole;
+exports.build = build;
+exports.watch = watch;
+exports.default = build;
