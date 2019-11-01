@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>WorkOrderStatus</id>
+		<title>Fleet Net Work Order Status</title>
+		<version>1.0.0</version>
+		<authors>Ryan Blackman</authors>
+		<owners>Champaign-Urbana Mass Transit District</owners>
+		<projectUrl>https://github.com/CUMTD/CUMTD</projectUrl>
+		<description>Display Work Order's from FleetNet</description>
+	</metadata>
+</package>

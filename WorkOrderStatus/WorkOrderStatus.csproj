@@ -175,6 +175,7 @@
     <Content Include="scss\site\_partials.scss" />
     <Content Include="scss\site\layout.scss" />
     <Content Include="scss\site\work-orders.scss" />
+    <Content Include="WorkOrderStatus.nuspec" />
     <TypeScriptCompile Include="ts\components\workOrderGroup.tsx" />
     <Content Include="scss\site\base.scss" />
     <Content Include="scss\site\colors.scss" />
