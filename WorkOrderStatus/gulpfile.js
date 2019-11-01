@@ -61,14 +61,7 @@ const css = () => gulp
 			.on('error', sass.logError))
 	.pipe(postcss([
 		mQPacker,
-		autoprefixer({
-			browsers: [
-				'> 1% in US',
-				'not ie <= 11'
-			],
-			flexbox: false,
-			grid: false
-		}),
+		autoprefixer(),
 		cssnano({
 			autoprefixer: false
 		})
