@@ -26,7 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.6</TypeScriptToolsVersion>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -163,7 +163,6 @@
     <Content Include="js\index.map" />
     <Content Include="css\site.css.map" />
     <Compile Include="Data\Configuration\WorkOrderConfiguration.cs" />
-    <Content Include="connectionStrings.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -187,7 +186,6 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <Content Include="webpack.config.js" />
     <Content Include="yarn.lock" />
   </ItemGroup>
   <ItemGroup />
