@@ -1,4 +1,5 @@
 # Work Order Status
+[![Build Status](https://dev.azure.com/cumtd/MTD/_apis/build/status/CUMTD.WorkOrderStatus?branchName=master)](https://dev.azure.com/cumtd/MTD/_build/latest?definitionId=18&branchName=master)
 
 ## Background Info
 This web application reads open work orders from a FleetNet database
